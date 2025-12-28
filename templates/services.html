@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Services - ServiceHub{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Our Services</h1>
+    
+    <div class="filter-section">
+        <h3>Filter by Category</h3>
+        <div class="filter-buttons">
+            <a href="/services" class="filter-btn {% if not selected_category %}active{% endif %}">All</a>
+            {% for cat in categories %}
+            <a href="/services?category={{ cat }}" class="filter-btn {% if selected_category == cat %}active{% endif %}">
+                {{ cat|title|replace('_', ' ') }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="services-grid">
+        {% for service in services %}
+        <div class="service-card">
+            <div class="service-header">
+                <h3>{{ service.name }}</h3>
+                <span class="service-category">{{ service.category.value|title|replace('_', ' ') }}</span>
+            </div>
+            <p class="service-description">{{ service.description or "Professional service" }}</p>
+            <div class="service-details">
+                <div class="service-info">
+                    <span class="price">${{ "%.2f"|format(service.base_price) }}</span>
+                    <span class="duration">⏱ {{ service.duration_hours }}h</span>
+                </div>
+                <a href="/professionals?service_id={{ service.id }}" class="btn btn-primary">Book Now</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-results">
+            <p>No services found in this category.</p>
+            <a href="/services" class="btn btn-secondary">View All Services</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

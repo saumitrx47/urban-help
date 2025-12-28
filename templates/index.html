@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Home - ServiceHub{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container">
+        <h1>Book Professional Services at Your Doorstep</h1>
+        <p>Connect with verified service professionals for all your home and personal care needs</p>
+        <a href="/services" class="btn btn-primary">Browse Services</a>
+    </div>
+</div>
+
+<div class="container">
+    <section class="ai-assistant">
+        <h2>Need Help Finding the Right Service?</h2>
+        <div class="ai-chat">
+            <form id="ai-form" action="/api/ai-recommendation" method="post">
+                <input type="text" name="query" placeholder="Ask me what service you need..." required>
+                <button type="submit" class="btn btn-secondary">Get Recommendation</button>
+            </form>
+            <div id="ai-response" class="ai-response"></div>
+        </div>
+    </section>
+
+    <section class="categories">
+        <h2>Service Categories</h2>
+        <div class="category-grid">
+            <a href="/services?category=cleaning" class="category-card">
+                <div class="category-icon">🧹</div>
+                <h3>Cleaning</h3>
+                <p>Home & Office Cleaning</p>
+            </a>
+            <a href="/services?category=plumbing" class="category-card">
+                <div class="category-icon">🔧</div>
+                <h3>Plumbing</h3>
+                <p>Repairs & Installation</p>
+            </a>
+            <a href="/services?category=electrical" class="category-card">
+                <div class="category-icon">⚡</div>
+                <h3>Electrical</h3>
+                <p>Wiring & Repairs</p>
+            </a>
+            <a href="/services?category=beauty" class="category-card">
+                <div class="category-icon">💅</div>
+                <h3>Beauty</h3>
+                <p>Hair & Makeup</p>
+            </a>
+            <a href="/services?category=massage" class="category-card">
+                <div class="category-icon">💆</div>
+                <h3>Massage</h3>
+                <p>Relaxation & Therapy</p>
+            </a>
+            <a href="/services?category=appliance_repair" class="category-card">
+                <div class="category-icon">🔌</div>
+                <h3>Appliance Repair</h3>
+                <p>Fix & Maintain</p>
+            </a>
+            <a href="/services?category=carpentry" class="category-card">
+                <div class="category-icon">🪚</div>
+                <h3>Carpentry</h3>
+                <p>Furniture & Woodwork</p>
+            </a>
+            <a href="/services?category=painting" class="category-card">
+                <div class="category-icon">🎨</div>
+                <h3>Painting</h3>
+                <p>Interior & Exterior</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>Why Choose ServiceHub?</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>✅ Verified Professionals</h3>
+                <p>All service providers are background-checked and verified</p>
+            </div>
+            <div class="feature-card">
+                <h3>💰 Transparent Pricing</h3>
+                <p>No hidden fees, clear pricing upfront</p>
+            </div>
+            <div class="feature-card">
+                <h3>🕐 Flexible Scheduling</h3>
+                <p>Book services at your convenience</p>
+            </div>
+            <div class="feature-card">
+                <h3>⭐ Quality Guaranteed</h3>
+                <p>100% satisfaction or money back</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('ai-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const responseDiv = document.getElementById('ai-response');
+    responseDiv.innerHTML = '<p class="loading">Getting recommendation...</p>';
+    
+    try {
+        const response = await fetch('/api/ai-recommendation', {
+            method: 'POST',
+            body: formData
+        });
+        const html = await response.text();
+        responseDiv.innerHTML = html;
+    } catch (error) {
+        responseDiv.innerHTML = '<p class="error">Sorry, couldn\'t get recommendation. Please try again.</p>';
+    }
+});
+</script>
+{% endblock %}
+

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings - ServiceHub{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>My Bookings</h1>
+    
+    {% if not customer %}
+    <div class="no-customer">
+        <p>Please enter your email to view bookings:</p>
+        <form method="get" class="email-form">
+            <input type="email" name="email" placeholder="your@email.com" required>
+            <button type="submit" class="btn btn-primary">View Bookings</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="customer-info">
+        <h2>Welcome, {{ customer.name }}!</h2>
+        <p>{{ customer.email }}</p>
+    </div>
+
+    {% if bookings %}
+    <div class="bookings-list">
+        {% for booking in bookings %}
+        <div class="booking-card">
+            <div class="booking-header">
+                <div>
+                    <h3>{{ booking.service.name }}</h3>
+                    <p class="booking-id">Booking #{{ booking.id }}</p>
+                </div>
+                <span class="status-badge status-{{ booking.status.value }}">{{ booking.status.value|title }}</span>
+            </div>
+            <div class="booking-details">
+                <div class="detail-item">
+                    <span class="detail-icon">👤</span>
+                    <span>{{ booking.professional.name }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">📅</span>
+                    <span>{{ booking.booking_date.strftime('%B %d, %Y at %I:%M %p') }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">⏱</span>
+                    <span>{{ booking.duration_hours }} hour{{ 's' if booking.duration_hours != 1 else '' }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">📍</span>
+                    <span>{{ booking.address }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">💰</span>
+                    <span class="price">${{ "%.2f"|format(booking.total_price) }}</span>
+                </div>
+            </div>
+            {% if booking.notes %}
+            <div class="booking-notes">
+                <strong>Notes:</strong> {{ booking.notes }}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-bookings">
+        <p>You don't have any bookings yet.</p>
+        <a href="/services" class="btn btn-primary">Browse Services</a>
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
+

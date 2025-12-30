@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Services - ServiceHub{% endblock %}
+{% block title %}Construction Services - ServiceHub{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h1>Our Services</h1>
+    <h1>Civil Construction Services</h1>
     
     <div class="filter-section">
         <h3>Filter by Category</h3>
@@ -19,27 +19,32 @@
     </div>
 
     <div class="services-grid">
-        {% for service in services %}
-        <div class="service-card">
-            <div class="service-header">
-                <h3>{{ service.name }}</h3>
-                <span class="service-category">{{ service.category.value|title|replace('_', ' ') }}</span>
-            </div>
-            <p class="service-description">{{ service.description or "Professional service" }}</p>
-            <div class="service-details">
-                <div class="service-info">
-                    <span class="price">${{ "%.2f"|format(service.base_price) }}</span>
-                    <span class="duration">⏱ {{ service.duration_hours }}h</span>
+        {% if services %}
+            {% for service in services %}
+            <div class="service-card">
+                <div class="service-header">
+                    <h3>{{ service.name or "Unknown Service" }}</h3>
+                    <span class="service-category">{% if service.category %}{{ service.category.value|title|replace('_', ' ') }}{% else %}N/A{% endif %}</span>
                 </div>
-                <a href="/professionals?service_id={{ service.id }}" class="btn btn-primary">Book Now</a>
+                <p class="service-description">{{ service.description or "Professional construction service" }}</p>
+                <div class="service-details">
+                    <div class="service-info">
+                        <span class="price">₹{{ "{:,.0f}".format(service.base_cost_min_inr or 0) }} - ₹{{ "{:,.0f}".format(service.base_cost_max_inr or 0) }}</span>
+                        <span class="duration">⏱ {{ service.estimated_duration_days or 0 }} day{{ 's' if (service.estimated_duration_days or 0) != 1 else '' }}</span>
+                    </div>
+                    <div class="service-info">
+                        <span class="duration">Skill level: {{ service.required_skill_level or "N/A" }}</span>
+                    </div>
+                    <a href="/professionals?service_id={{ service.id }}" class="btn btn-primary">Request Project Quote</a>
+                </div>
             </div>
-        </div>
+            {% endfor %}
         {% else %}
-        <div class="no-results">
-            <p>No services found in this category.</p>
-            <a href="/services" class="btn btn-secondary">View All Services</a>
-        </div>
-        {% endfor %}
+            <div class="no-results">
+                <p>No construction services found in this category.</p>
+                <a href="/services" class="btn btn-secondary">View All Services</a>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

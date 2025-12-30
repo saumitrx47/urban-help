@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}My Bookings - ServiceHub{% endblock %}
+{% block title %}My Projects - ServiceHub{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h1>My Bookings</h1>
+    <h1>My Projects</h1>
     
     {% if not customer %}
     <div class="no-customer">
-        <p>Please enter your email to view bookings:</p>
+        <p>Please enter your email to view your project requests:</p>
         <form method="get" class="email-form">
             <input type="email" name="email" placeholder="your@email.com" required>
-            <button type="submit" class="btn btn-primary">View Bookings</button>
+            <button type="submit" class="btn btn-primary">View Projects</button>
         </form>
     </div>
     {% else %}
@@ -26,31 +26,31 @@
         <div class="booking-card">
             <div class="booking-header">
                 <div>
-                    <h3>{{ booking.service.name }}</h3>
-                    <p class="booking-id">Booking #{{ booking.id }}</p>
+                    <h3>{% if booking.service %}{{ booking.service.name }}{% else %}Unknown Service{% endif %}</h3>
+                    <p class="booking-id">Project #{{ booking.id }}</p>
                 </div>
-                <span class="status-badge status-{{ booking.status.value }}">{{ booking.status.value|title }}</span>
+                <span class="status-badge status-{{ booking.status.value if booking.status else 'requested' }}">{{ (booking.status.value if booking.status else 'requested')|title }}</span>
             </div>
             <div class="booking-details">
                 <div class="detail-item">
                     <span class="detail-icon">👤</span>
-                    <span>{{ booking.professional.name }}</span>
+                    <span>{% if booking.professional %}{{ booking.professional.name }}{% else %}N/A{% endif %}</span>
                 </div>
                 <div class="detail-item">
                     <span class="detail-icon">📅</span>
-                    <span>{{ booking.booking_date.strftime('%B %d, %Y at %I:%M %p') }}</span>
+                    <span>Start: {% if booking.project_start_date %}{{ booking.project_start_date.strftime('%B %d, %Y') }}{% else %}N/A{% endif %}</span>
                 </div>
                 <div class="detail-item">
                     <span class="detail-icon">⏱</span>
-                    <span>{{ booking.duration_hours }} hour{{ 's' if booking.duration_hours != 1 else '' }}</span>
+                    <span>{{ booking.estimated_duration_days or 0 }} day{{ 's' if (booking.estimated_duration_days or 0) != 1 else '' }}</span>
                 </div>
                 <div class="detail-item">
                     <span class="detail-icon">📍</span>
-                    <span>{{ booking.address }}</span>
+                    <span>{{ booking.address or "N/A" }}</span>
                 </div>
                 <div class="detail-item">
                     <span class="detail-icon">💰</span>
-                    <span class="price">${{ "%.2f"|format(booking.total_price) }}</span>
+                    <span class="price">₹{{ "{:,.0f}".format(booking.quoted_price_inr or 0) }}</span>
                 </div>
             </div>
             {% if booking.notes %}
@@ -63,8 +63,8 @@
     </div>
     {% else %}
     <div class="no-bookings">
-        <p>You don't have any bookings yet.</p>
-        <a href="/services" class="btn btn-primary">Browse Services</a>
+        <p>You don't have any projects yet.</p>
+        <a href="/services" class="btn btn-primary">Browse Construction Services</a>
     </div>
     {% endif %}
     {% endif %}

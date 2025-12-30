@@ -1,54 +1,65 @@
 {% extends "base.html" %}
 
-{% block title %}Service Professionals - ServiceHub{% endblock %}
+{% block title %}Contractors - ServiceHub{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h1>Choose Your Service Professional</h1>
+    <h1>Select a Contractor for Your Project</h1>
     
     {% if service %}
     <div class="service-banner">
-        <h2>Booking: {{ service.name }}</h2>
-        <p>{{ service.description or "Professional service" }}</p>
+        <h2>Project Type: {{ service.name }}</h2>
+        <p>{{ service.description or "Civil construction service" }}</p>
     </div>
     {% endif %}
 
     <div class="professionals-grid">
-        {% for professional in professionals %}
-        <div class="professional-card">
-            <div class="professional-header">
-                <div class="professional-avatar">
-                    {{ professional.name[0]|upper }}
-                </div>
-                <div class="professional-info">
-                    <h3>{{ professional.name }}</h3>
-                    <div class="rating">
-                        <span class="stars">⭐</span>
-                        <span>{{ "%.1f"|format(professional.rating) }}</span>
-                        <span class="reviews">({{ professional.total_reviews }} reviews)</span>
+        {% if professionals %}
+            {% for professional in professionals %}
+            <div class="professional-card">
+                <div class="professional-header">
+                    <div class="professional-avatar">
+                        {{ (professional.name[0]|upper) if professional.name else "?" }}
+                    </div>
+                    <div class="professional-info">
+                        <h3>{{ professional.name or "Unknown Contractor" }}</h3>
+                        <div class="rating">
+                            <span class="stars">⭐</span>
+                            <span>{{ "%.1f"|format(professional.rating or 0.0) }}</span>
+                            <span class="reviews">({{ professional.total_reviews or 0 }} reviews)</span>
+                        </div>
                     </div>
                 </div>
+                <div class="professional-details">
+                    <p class="category-badge">{% if professional.service_category %}{{ professional.service_category.value|title|replace('_', ' ') }}{% else %}N/A{% endif %}</p>
+                    <p class="experience">📅 {{ professional.experience_years or 0 }} years experience</p>
+                    {% if professional.specialization %}
+                    <p class="experience">🏗️ Specialization: {{ professional.specialization }}</p>
+                    {% endif %}
+                    {% if professional.license_number %}
+                    <p class="experience">📜 License: {{ professional.license_number }}</p>
+                    {% endif %}
+                    <p class="rate">💰 Daily rate: ₹{{ "{:,.0f}".format(professional.daily_rate_inr or 0) }}</p>
+                    {% if professional.service_areas %}
+                    <p class="experience">📍 Service areas: {{ professional.service_areas }}</p>
+                    {% endif %}
+                    {% if professional.bio %}
+                    <p class="bio">{{ professional.bio }}</p>
+                    {% endif %}
+                </div>
+                <div class="professional-actions">
+                    <a href="/book/{{ professional.id }}{% if service %}?service_id={{ service.id }}{% endif %}" class="btn btn-primary">
+                        Request Project Quote
+                    </a>
+                </div>
             </div>
-            <div class="professional-details">
-                <p class="category-badge">{{ professional.service_category.value|title|replace('_', ' ') }}</p>
-                <p class="experience">📅 {{ professional.experience_years }} years experience</p>
-                <p class="rate">💰 ${{ "%.2f"|format(professional.hourly_rate) }}/hour</p>
-                {% if professional.bio %}
-                <p class="bio">{{ professional.bio }}</p>
-                {% endif %}
-            </div>
-            <div class="professional-actions">
-                <a href="/book/{{ professional.id }}{% if service %}?service_id={{ service.id }}{% endif %}" class="btn btn-primary">
-                    Book Now
-                </a>
-            </div>
-        </div>
+            {% endfor %}
         {% else %}
-        <div class="no-results">
-            <p>No professionals available at the moment.</p>
-            <a href="/services" class="btn btn-secondary">Browse Services</a>
-        </div>
-        {% endfor %}
+            <div class="no-results">
+                <p>No contractors available at the moment.</p>
+                <a href="/services" class="btn btn-secondary">Browse Construction Services</a>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -1,70 +1,70 @@
 {% extends "base.html" %}
 
-{% block title %}Home - ServiceHub{% endblock %}
+{% block title %}Home - ServiceHub Civil Construction{% endblock %}
 
 {% block content %}
 <div class="hero-section">
     <div class="container">
-        <h1>Book Professional Services at Your Doorstep</h1>
-        <p>Connect with verified service professionals for all your home and personal care needs</p>
-        <a href="/services" class="btn btn-primary">Browse Services</a>
+        <h1>Plan and Manage Civil Construction Projects with Trusted Contractors</h1>
+        <p>Connect with verified civil contractors for residential, commercial, and infrastructure projects across India.</p>
+        <a href="/services" class="btn btn-primary">Browse Construction Services</a>
     </div>
 </div>
 
 <div class="container">
     <section class="ai-assistant">
-        <h2>Need Help Finding the Right Service?</h2>
+        <h2>Need Help Scoping Your Construction Project?</h2>
         <div class="ai-chat">
             <form id="ai-form" action="/api/ai-recommendation" method="post">
-                <input type="text" name="query" placeholder="Ask me what service you need..." required>
-                <button type="submit" class="btn btn-secondary">Get Recommendation</button>
+                <input type="text" name="query" placeholder="Describe your construction project (location, size, type)..." required>
+                <button type="submit" class="btn btn-secondary">Get Project Guidance</button>
             </form>
             <div id="ai-response" class="ai-response"></div>
         </div>
     </section>
 
     <section class="categories">
-        <h2>Service Categories</h2>
+        <h2>Civil Construction Service Categories</h2>
         <div class="category-grid">
-            <a href="/services?category=cleaning" class="category-card">
-                <div class="category-icon">🧹</div>
-                <h3>Cleaning</h3>
-                <p>Home & Office Cleaning</p>
+            <a href="/services?category=residential_construction" class="category-card">
+                <div class="category-icon">🏠</div>
+                <h3>Residential Construction</h3>
+                <p>Individual houses, villas, and apartments</p>
             </a>
-            <a href="/services?category=plumbing" class="category-card">
-                <div class="category-icon">🔧</div>
-                <h3>Plumbing</h3>
-                <p>Repairs & Installation</p>
+            <a href="/services?category=commercial_construction" class="category-card">
+                <div class="category-icon">🏢</div>
+                <h3>Commercial Construction</h3>
+                <p>Offices, retail, and industrial buildings</p>
             </a>
-            <a href="/services?category=electrical" class="category-card">
+            <a href="/services?category=road_pavement_work" class="category-card">
+                <div class="category-icon">🛣️</div>
+                <h3>Road & Pavement Work</h3>
+                <p>Roads, pathways, parking areas</p>
+            </a>
+            <a href="/services?category=structural_repair_retrofitting" class="category-card">
+                <div class="category-icon">🏗️</div>
+                <h3>Structural Repair & Retrofitting</h3>
+                <p>Strengthening and repairing existing structures</p>
+            </a>
+            <a href="/services?category=plumbing_drainage_civil" class="category-card">
+                <div class="category-icon">🚰</div>
+                <h3>Plumbing & Drainage (Civil)</h3>
+                <p>Water supply, drainage, and sewage lines</p>
+            </a>
+            <a href="/services?category=electrical_infrastructure" class="category-card">
                 <div class="category-icon">⚡</div>
-                <h3>Electrical</h3>
-                <p>Wiring & Repairs</p>
+                <h3>Electrical Infrastructure</h3>
+                <p>LT/HT works, panels, and cabling</p>
             </a>
-            <a href="/services?category=beauty" class="category-card">
-                <div class="category-icon">💅</div>
-                <h3>Beauty</h3>
-                <p>Hair & Makeup</p>
-            </a>
-            <a href="/services?category=massage" class="category-card">
-                <div class="category-icon">💆</div>
-                <h3>Massage</h3>
-                <p>Relaxation & Therapy</p>
-            </a>
-            <a href="/services?category=appliance_repair" class="category-card">
-                <div class="category-icon">🔌</div>
-                <h3>Appliance Repair</h3>
-                <p>Fix & Maintain</p>
-            </a>
-            <a href="/services?category=carpentry" class="category-card">
-                <div class="category-icon">🪚</div>
-                <h3>Carpentry</h3>
-                <p>Furniture & Woodwork</p>
-            </a>
-            <a href="/services?category=painting" class="category-card">
+            <a href="/services?category=painting_finishing" class="category-card">
                 <div class="category-icon">🎨</div>
-                <h3>Painting</h3>
-                <p>Interior & Exterior</p>
+                <h3>Painting & Finishing</h3>
+                <p>Interior, exterior, and final finish works</p>
+            </a>
+            <a href="/services?category=site_inspection_consulting" class="category-card">
+                <div class="category-icon">📐</div>
+                <h3>Site Inspection & Consulting</h3>
+                <p>Technical site visits and project consulting</p>
             </a>
         </div>
     </section>
